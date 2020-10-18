@@ -1,7 +1,7 @@
 # DojinHakusho
 『DLsite』をクロールし，任意のクリエイターの情報を収集・整理するフリーソフトです． 
 
-## DojinHakusho is 何
+## DojinHakusho is 何？
 図を用いて詳細な動作を説明します（と言っても動作は非常に簡素です）．
 
 <img src="https://user-images.githubusercontent.com/44240143/96359980-823e2280-1153-11eb-930f-5d25f9db1e0e.png" width=70%>
