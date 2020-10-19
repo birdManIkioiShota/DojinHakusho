@@ -33,4 +33,7 @@ creator_name_url = urllib.parse.quote(creator_name)
 
 search_url = "https://www.dlsite.com/maniax/fsr/=/language/jp/sex_category%5B0%5D/male/keyword_maker_name/" + circle_name_url + "/keyword_creater/" +  creator_name_url + "/ana_flg/off/genre_and_or/or/options_and_or/or/file_type_category%5B0%5D/audio_file/file_type_category_name%5B0%5D/%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB/per_page/100/show_type/1/without_order/1/order/release_d"
 
+print("探索開始…")
 url_info = requests.get(search_url)
+print("探索終了")
+
