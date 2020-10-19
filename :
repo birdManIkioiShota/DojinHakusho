@@ -2,8 +2,6 @@
 
 import requests
 import urllib.parse
-import re
-
 # DoujinHakushoをご利用いただきありがとうございます．
 # 本ツールはDLsiteをクロールし，サークル・声優の出演作情報を取得，
 # 図表としてレポートする機能を持ちます．
@@ -19,7 +17,7 @@ circle_name = ""
 # ここに調べたい声優の名前を入力する．
 # 名前はDLsiteのクリエイタータグと一致させる必要がある．
 # 声優不問の場合は空欄にすること
-creator_name = "一之瀬りと"
+creator_name = "砂糖しお"
 
 # htmlの保存先
 htmlPath = "data/page.html"
@@ -47,57 +45,15 @@ with open(htmlPath, mode='w') as f:
 
 # パース処理
 with open(htmlPath, mode='r') as f:
-    flag = 0
-    count = 0
     for line in f:
-        # 開始タグ
         if line == '<tr class="">\n' :
-            count = count + 1
-            flag = 1
-        # 終了タグ
-        if line == '</tr>\n' :
-            flag = 0
-        
-        if flag == 1:
-            # RJの通し番号
-            titlePattern = ".*product_id/(.*).html.*\">(.*)</a></dt>"
-            result = re.match(titlePattern, line)
-            if result:
-                print("\n", count, result.group(1), result.group(2))
+            print(line)
 
-            # サークル名
-            circlePattern = ".*circle/profile/.*"
-            result = re.match(circlePattern, line)
-            if result:
-                line = f.readline()
-                author = line.replace('</a>', '')
-                author = author.replace("\n", "")
-                print(author)
-
-            # 声優名
-            # キャストが複数人いる場合があるので
-            castPattern = "class=\"\">(.*?)</a>"
-            for result in re.finditer(castPattern, line, re.MULTILINE):
-                cast = result.groups(1)[0]
-                print(cast, "; " , end="")
-
-            # 価格
-            pricePattern = ".*work_price\">(.*)<i>.*"
-            result = re.match(pricePattern, line)
-            if result:
-                print("\n", result.group(1))
-            
-            # 割引時の処理
-            salePattern = ".*strike\">(.*)<i>.*"
-            result = re.match(salePattern, line)
-            if result:
-                print("\n", result.group(1))
-
-    print("作品数：", count)
 
 
 # 生データの生成処理
 with open(rawdataPath, mode='w') as f:
-    f.write("通し番号,RJナンバー,タイトル,サークル,声優,値段,販売数,ジャンル,発売年,発売月,発売日")
+    f.write("通し番号,タイトル,声優,クリエイター,値段,販売数,ジャンル,発売年,発売月,発売日")
+
 print("探索終了！")
 
