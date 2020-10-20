@@ -3,10 +3,10 @@
 import requests
 import urllib.parse
 import re
+import os
 
 # DoujinHakushoをご利用いただきありがとうございます．
-# 本ツールはDLsiteをクロールし，サークル・声優の出演作情報を取得，
-# 図表としてレポートする機能を持ちます．
+# 本ツールはDLsiteをクロールし，サークル・声優の出演作情報を取得，図表としてレポートする機能を持ちます．
 # 現在は販売中の男性向けオーディオファイルに対応しています．
 # 詳細につきましては以下URLをご参照ください．
 # https://github.com/birdManIkioiShota/DoujinHakusho
@@ -19,9 +19,9 @@ circle_name = ""
 # ここに調べたい声優の名前を入力する．
 # 名前はDLsiteのクリエイタータグと一致させる必要がある．
 # 声優不問の場合は空欄にすること
-creator_name = "陽向葵ゅか"
+creator_name = "逢坂成美"
 
-# パース処理
+# HTMLのパース処理
 count = 0 # ツール上の管理番号
 def parse(htmlPath, count):
     with open(htmlPath, mode='r') as f:
@@ -50,12 +50,26 @@ def parse(htmlPath, count):
             # 終了タグ
             if line == '</tr>\n' and flag == 1:
                 flag = 0
-                print(count, rjno, title)
-                #print(author,"/", cast)
-                #print(price + "JPY")
-                #print(tag)
-                #print("売上：", sales)
-                #print(date)
+                
+                with open(rawdataPath, mode='a') as csv:
+                    csv.write(str(count))
+                    csv.write(",")
+                    csv.write(rjno)
+                    csv.write(",\"")
+                    csv.write(title)
+                    csv.write("\",\"")
+                    csv.write(author)
+                    csv.write("\",\"")
+                    csv.write(cast)
+                    csv.write("\",")
+                    csv.write(price.replace(',',''))
+                    csv.write(",")
+                    csv.write(sales.replace(',',''))
+                    csv.write(",\"")
+                    csv.write(tag)
+                    csv.write("\",")
+                    csv.write(date)
+                    csv.write("\n")
             
                 # 初期値に戻しておく
                 rjno = "-"
@@ -151,26 +165,32 @@ htmlPath = "data/page.html"
 #生データの保存先
 rawdataPath = "data/raw_data.csv"
 
-# htmlはとりあえず保存しとく
+# 最初のHTMLを取得する
 with open(htmlPath, mode='w') as f:
     f.write(requests.get(search_url).text)
 
 i = 1 # ページ数
 access_url = search_url
+
+# 生データの生成処理
+with open(rawdataPath, mode='w') as f:
+    f.write("通し番号,RJナンバー,タイトル,サークル,声優,値段,販売数,ジャンル,発売日\n")
+
+# DLsiteへのクロールとパース処理
 while True:
     rtn, count = parse(htmlPath, count)
+    # これ以上存在しなかったら第1返り値がFalseになる
     if rtn == False:
         break
-
+    
+    # 次ページのURLを生成しHTMLを取得する
     i = i + 1
     access_url = search_url + "/page/" + str(i)
     with open(htmlPath, mode='w') as f:
         f.write(requests.get(access_url).text)
 
+print("探索終了！")
 print("作品数：　", count)
 
-# 生データの生成処理
-with open(rawdataPath, mode='w') as f:
-    f.write("通し番号,RJナンバー,タイトル,サークル,声優,値段,販売数,ジャンル,発売年,発売月,発売日")
-print("探索終了！")
-
+# ソースをGitに流すのはまずいので意図的にHTMLを削除しています
+os.remove(htmlPath)
