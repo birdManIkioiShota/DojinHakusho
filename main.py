@@ -5,7 +5,7 @@ import urllib.parse
 import re
 import os
 
-# DoujinHakushoをご利用いただきありがとうございます．
+# DojinHakushoをご利用いただきありがとうございます．
 # 本ツールはDLsiteをクロールし，サークル・声優の出演作情報を取得，図表としてレポートする機能を持ちます．
 # 現在は販売中の男性向けオーディオファイルに対応しています．
 # 詳細につきましては以下URLをご参照ください．
@@ -19,7 +19,7 @@ circle_name = ""
 # ここに調べたい声優の名前を入力する．
 # 名前はDLsiteのクリエイタータグと一致させる必要がある．
 # 声優不問の場合は空欄にすること
-creator_name = "逢坂成美"
+creator_name = "砂糖しお"
 
 # HTMLのパース処理
 count = 0 # ツール上の管理番号
@@ -31,10 +31,10 @@ def parse(htmlPath, count):
         title = "-" # タイトル
         author = "-" # サークル
         cast = "-" # 声優
-        price = "-" # 価格（非セール時）
+        price = "0" # 価格（非セール時）
         tag = "-" # DLsiteタグ（性癖）
         date = "-" # 発売日
-        sales = "-" # 売上本数
+        sales = "0" # 売上本数
         for line in f:
             # 404になったら脱出する
             notFoundPattern = ".*404 | DLsite.*"
@@ -45,41 +45,26 @@ def parse(htmlPath, count):
             if line == '<tr class="">\n' :
                 count = count + 1
                 flag = 1
-                sales = "-"
 
             # 終了タグ
             if line == '</tr>\n' and flag == 1:
                 flag = 0
                 
                 with open(rawdataPath, mode='a') as csv:
-                    csv.write(str(count))
-                    csv.write(",")
-                    csv.write(rjno)
-                    csv.write(",\"")
-                    csv.write(title)
-                    csv.write("\",\"")
-                    csv.write(author)
-                    csv.write("\",\"")
-                    csv.write(cast)
-                    csv.write("\",")
-                    csv.write(price.replace(',',''))
-                    csv.write(",")
-                    csv.write(sales.replace(',',''))
-                    csv.write(",\"")
-                    csv.write(tag)
-                    csv.write("\",")
-                    csv.write(date)
-                    csv.write("\n")
+                    csv.write(str(count) + "," + rjno + ",\"" + title + "\",\"")
+                    csv.write(author + "\",\"" + cast + "\",")
+                    csv.write(price.replace(',','') + "," + sales.replace(',','') + ",\"")
+                    csv.write(tag + "\"," + date + "\n")
             
                 # 初期値に戻しておく
                 rjno = "-"
                 title = "-"
                 author = "-"
                 cast = "-"
-                price = "-"
+                price = "0"
                 tag = "-"
                 date = "-"
-                sales = "-"
+                sales = "0"
                 
             # ここから抽出処理
             if flag == 1:
@@ -174,7 +159,7 @@ access_url = search_url
 
 # 生データの生成処理
 with open(rawdataPath, mode='w') as f:
-    f.write("通し番号,RJナンバー,タイトル,サークル,声優,値段,販売数,ジャンル,発売日\n")
+    f.write("id,RJ_No,title,circle,cast,price,sales,tag,date\n")
 
 # DLsiteへのクロールとパース処理
 while True:
