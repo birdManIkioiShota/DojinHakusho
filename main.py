@@ -4,6 +4,7 @@ import requests
 import urllib.parse
 import re
 import os
+import time
 
 # DojinHakushoをご利用いただきありがとうございます．
 # 本ツールはDLsiteをクロールし，サークル・声優の出演作情報を取得，図表としてレポートする機能を持ちます．
@@ -14,12 +15,15 @@ import os
 # ここに調べたいサークルの名前を入力する．
 # 名前はDLsiteのサークル名と一致させる必要がある
 # サークル不問の場合は空欄にすること
-circle_name = ""
+circle_name = "いちのや"
 
 # ここに調べたい声優の名前を入力する．
 # 名前はDLsiteのクリエイタータグと一致させる必要がある．
 # 声優不問の場合は空欄にすること
-creator_name = "砂糖しお"
+creator_name = "一之瀬りと"
+
+# 開始時刻の取得
+start = time.time()
 
 # HTMLのパース処理
 count = 0 # ツール上の管理番号
@@ -90,7 +94,7 @@ def parse(htmlPath, count):
                     if(cast == "-"):
                         cast = result
                     else:
-                        cast = cast + ";" + result
+                        cast = cast + "," + result
                         
                 # 価格
                 pricePattern = ".*work_price\">(.*)<i>.*"
@@ -114,13 +118,16 @@ def parse(htmlPath, count):
                         if(tag == "-"):
                             tag = result
                         else:
-                            tag = tag + ";" + result
+                            tag = tag + "," + result
                             
                 # 発売日の抽出
                 launchDatePattern = ".*sales_date\">販売日:&nbsp;(.*?)</li>.*"
                 result = re.match(launchDatePattern, line)
                 if result:
                     date = result.group(1)
+                    date = date.replace("年", '-')
+                    date = date.replace("月", '-')
+                    date = date.replace("日", '')
                     
                 # 販売数の抽出
                 dlCountPattern = ".*dl_count.*>(.*)</span>.*"
@@ -143,7 +150,7 @@ creator_name_url = urllib.parse.quote(creator_name)
 
 search_url = "https://www.dlsite.com/maniax/fsr/=/language/jp/sex_category%5B0%5D/male/keyword_maker_name/\"" + circle_name_url + "\"/keyword_creater/\"" +  creator_name_url + "\"/ana_flg/off/genre_and_or/or/options_and_or/or/file_type_category%5B0%5D/audio_file/file_type_category_name%5B0%5D/%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB/per_page/100/show_type/1/without_order/1/order/release_d"
 
-print("\n探索中…")
+print("\n探索終了までお待ちください…\n")
 
 # htmlの保存先
 htmlPath = "data/page.html"
@@ -168,6 +175,10 @@ while True:
     if rtn == False:
         break
     
+    # アクセス過多を避けるため5秒間待機します
+    # 数字の根拠はrobots.txt
+    time.sleep(5)
+
     # 次ページのURLを生成しHTMLを取得する
     i = i + 1
     access_url = search_url + "/page/" + str(i)
@@ -175,7 +186,9 @@ while True:
         f.write(requests.get(access_url).text)
 
 print("探索終了！")
-print("作品数：　", count)
+print("作品数　　：　", count, "[個]")
 
 # ソースをGitに流すのはまずいので意図的にHTMLを削除しています
 os.remove(htmlPath)
+
+print("実行時間　：", '{:.1f}'.format(time.time()-start), "[sec]")
