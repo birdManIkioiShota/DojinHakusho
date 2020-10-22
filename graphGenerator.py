@@ -22,9 +22,16 @@ creator_name = "砂糖しお"
 
 data = pd.read_csv("data/raw_data.csv", index_col='id')
 #data = data[["price", "sales"]]
-print(data.describe())
+#print(data.describe())
 
 data['date'] = pd.to_datetime(data['date'])
+
+#data = data[['sales']]
+fig, axes = plt.subplots(figsize = (12, 8))
+plt.boxplot(data['sales'])
+axes.set_xticklabels(['2016-01-23 ~ 2020-10-22'])
+plt.grid()
+plt.show()
 
 # 年ごとの統計
 #data = data[['date', 'sales']]
