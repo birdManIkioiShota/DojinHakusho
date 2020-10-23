@@ -20,29 +20,18 @@ data['date'] = pd.to_datetime(data['date'])
 #data = data[['sales']]
 
 # 箱ひげ図
-#fig, axes = plt.subplots(figsize = (12, 8))
-#plt.boxplot(data['sales'])
-#plt.title('box plot')
-#plt.ylabel('sales')
-#plt.ylim([0,10000])
-#axes.set_xticklabels(['2016-01-23 ~ 2020-10-22'])
-#plt.grid()
-#plt.show()
+fig, axes = plt.subplots(figsize = (12, 8))
+plt.boxplot(data['sales'])
+plt.title('box plot')
+plt.ylabel('sales')
+#plt.ylim([0,7500])
+axes.set_xticklabels(['all terms'])
+plt.grid()
+plt.show()
 
 # 年ごとの統計
 #data = data[['date', 'sales']]
 #data.set_index('date', inplace=True)
 #print(data.resample('Y').sum())
 # sale sum
-
-# ログのヒストグラム
-#plt.hist(data['sales'], bins=np.logspace(1,5,int(np.sqrt(len(data)))))
-#plt.gca().set_xscale("log")
-#plt.show()
-
-
-#data_by_y = data[(data['date'] >= dt.datetime(2000,1,1)) & (data['date'] <= dt.datetime(2000,12,31))]
-#print(data_by_y.describe())
-#if data_by_y.empty:
-#    print('empty!')
 
