@@ -8,13 +8,17 @@ import datetime as dt
 data = pd.read_csv("../data/raw_data.csv", index_col='id')
 data['date'] = pd.to_datetime(data['date'])
 
-# このスクリプトは年毎の要約統計量を得るためのものです．
-thisYear = dt.date.today().year
+thisYear = int(data['date'].max().strftime('%Y'))
+
+# 空データを生成する
 with open('../log/getDescribe_by_years.txt', mode='w') as f:
     	print("")
+
+# このスクリプトは年毎の要約統計量を得るためのものです．
 while True:
     data_by_y = data[(data['date'] >= dt.datetime(thisYear,1,1)) & (data['date'] <= dt.datetime(thisYear,12,31))]
-    if(data_by_y.empty):
+    
+    if(thisYear < int(data['date'].min().strftime('%Y'))):
         break
     print(str(thisYear) + "年:")
     print(data_by_y.describe())
