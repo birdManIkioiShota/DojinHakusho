@@ -23,7 +23,11 @@ while True:
     
     # ここから年毎に別々の図にまとめて出力する処理
     fig, axes = plt.subplots()
-    plt.ylim([0,10000])
+
+    # 表示範囲の設定
+    # 外れ値が大きすぎるときに設定すること
+    #plt.ylim([0,10000])
+    
     plt.title('Box plot of sales in ' + str(thisYear))
     plt.xlabel('Year')
     plt.ylabel('Number of sales')
@@ -48,9 +52,12 @@ plt.title('Box plot of sales by year')
 
 # 表示範囲の設定
 # 外れ値が大きすぎるときに設定すること
-#plt.ylim([0, 6000])
-
+plt.ylim([0, 10000])
 plt.xlabel('Year')
 plt.ylabel('Number of Sales')
 plt.boxplot(filtered_data, showmeans=True)
+
+# x軸のラベル
+axes.set_xticklabels(['2016','2017','2018','2019','2020'])
+
 plt.savefig("../fig/Boxplot_by_year.png")

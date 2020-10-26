@@ -11,8 +11,7 @@ data['date'] = pd.to_datetime(data['date'])
 thisYear = int(data['date'].max().strftime('%Y'))
 
 # 空データを生成する
-with open('../log/getDescribe_by_year.txt', mode='w') as f:
-    	print("")
+f = open('../log/getDescribe_by_year.txt', mode='w')
 
 # このスクリプトは年毎の要約統計量を得るためのものです．
 while True:
@@ -24,8 +23,8 @@ while True:
     print(data_by_y.describe())
     print("")
     
-    with open('../log/getDescribe_by_year.txt', mode='a') as f:
-    	f.write(str(thisYear) + "年：\n")
-    	f.write(str(data_by_y.describe()) + "\n\n")
+    f.write(str(thisYear) + "年：\n")
+    f.write(str(data_by_y.describe()) + "\n\n")
     	
     thisYear = thisYear - 1
+f.close()
