@@ -9,30 +9,33 @@ import collections
 data = pd.read_csv("../data/raw_data.csv", index_col='id')
 data['date'] = pd.to_datetime(data['date'])
 
-# 空データの生成
-f = open('../log/getCircleCastData.txt', mode='w')
+# サークル情報のパス
+circle_path = '../data/getCircleData.csv'
+# 声優情報のパス
+cast_path = '../data/getCastData.csv'
 
-# サークル出現数の閾値
-circle_n_thr = 3
+# サークルの情報をCSVに出力する
+print("Generate " + circle_path)
+circle_data = pd.Series(data['circle'].value_counts())
+circle_data.rename(columns={'circle' : '出現数'}, inplace=True)
+circle_data = pd.concat([circle_data, circle_data/len(data)], axis=1)
+circle_data.columns = ['出現数','出現率']
+circle_data.to_csv(circle_path, header=True)
 
-# サークル出現数の記述
-title = ("サークル出現数(>= " + str(circle_n_thr) + ")：")
-info = (str(data['circle'][data['circle'].map(data['circle'].value_counts() >= circle_n_thr)].value_counts()))
-print(title + "\n" + info)
-f.write(title + "\n" + info)
-
-# 調査対象の声優を排除する
+# ここから出演声優情報の処理
+# 調査対象の声優名をデータから排除する
 exc_cast = "砂糖しお"
 
 spl_cast = data['cast'].str.split(',', expand=True)
 
 castData = None
 for clnm in spl_cast:
-    spl_cast.loc[spl_cast[clnm] == exc_cast] = None
+    spl_cast.loc[spl_cast[clnm] == '-', clnm] = None
+    spl_cast.loc[spl_cast[clnm] == exc_cast, clnm] = None
     castData = pd.concat([castData, spl_cast[clnm]])
 
-title = ("声優出現数(exclude " + exc_cast + ")")
-info = str(castData.value_counts())
-print("\n" + title + "\n" + info)
-f.write("\n\n" + title + "\n" + info)
-f.close()
+info = castData.value_counts()
+info = pd.concat([info, info/len(data)], axis=1)
+info.columns = ['出現数','出現率']
+print("Generate " + cast_path)
+info.to_csv(cast_path, header=True)

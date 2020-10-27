@@ -12,6 +12,7 @@ data['date'] = pd.to_datetime(data['date'])
 
 thisYear = int(data['date'].min().strftime('%Y'))
 
+x_label = list()
 data_concat = None
 while True:
     data_by_y = data[(data['date'] >= dt.datetime(thisYear,1,1)) & (data['date'] <= dt.datetime(thisYear,12,31))]
@@ -21,20 +22,23 @@ while True:
     data_by_y = data_by_y.rename(columns={'sales' : str(thisYear)})
     data_by_y = data_by_y[str(thisYear)]
     
+    x_label.append(str(thisYear))
+    
     # ここから年毎に別々の図にまとめて出力する処理
     fig, axes = plt.subplots()
 
     # 表示範囲の設定
     # 外れ値が大きすぎるときに設定すること
-    #plt.ylim([0,10000])
+    plt.ylim([0,10000])
     
     plt.title('Box plot of sales in ' + str(thisYear))
     plt.xlabel('Year')
-    plt.ylabel('Number of sales')
+    plt.ylabel('Sales')
     plt.boxplot(data_by_y, showmeans=True)
     axes.set_xticklabels([thisYear])
     plt.grid(linestyle='dashed')
     plt.savefig("../fig/Boxplot_" + str(thisYear) + ".png")
+    print("Generate ../fig/Boxplot_" + str(thisYear) + ".png")
 
     data_by_y = data_by_y.dropna().reset_index(drop=True)
     
@@ -54,10 +58,10 @@ plt.title('Box plot of sales by year')
 # 外れ値が大きすぎるときに設定すること
 plt.ylim([0, 10000])
 plt.xlabel('Year')
-plt.ylabel('Number of Sales')
+plt.ylabel('Sales')
 plt.boxplot(filtered_data, showmeans=True)
 
-# x軸のラベル
-axes.set_xticklabels(['2016','2017','2018','2019','2020'])
+axes.set_xticklabels(x_label)
 
 plt.savefig("../fig/Boxplot_by_year.png")
+print("Generate ../fig/Boxplot_by_year.png")

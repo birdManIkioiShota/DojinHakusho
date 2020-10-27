@@ -15,7 +15,7 @@ fig, axes = plt.subplots()
 plt.boxplot(data['sales'], showmeans=True)
 plt.title('Box plot of sales')
 plt.xlabel('Term')
-plt.ylabel('Number of sales')
+plt.ylabel('Sales')
 
 # 表示範囲の設定
 # 外れ値が大きすぎる場合箱が隅に追いやられてしまうので使うこと
@@ -25,3 +25,4 @@ axes.set_xticklabels([str(data['date'].min().strftime('%Y/%m/%d')) + " ~ " + str
 plt.grid(linestyle='dashed')
 
 plt.savefig("../fig/Boxplot.png")
+print("Generate ../fig/Boxplot.png")

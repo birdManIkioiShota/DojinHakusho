@@ -15,9 +15,10 @@ plt.grid(linestyle='dashed')
 plt.hist(data['sales'], bins=int(np.sqrt(len(data))), ec='black')
 
 plt.title("Sales histogram")
-plt.ylabel("Number of products")
-plt.xlabel("Number of sales")
+plt.ylabel("Products")
+plt.xlabel("Sales")
 plt.savefig("../fig/Histogram.png")
+print("Generate ../fig/Histogram.png")
 
 plt.close()
 
@@ -29,6 +30,7 @@ plt.hist(data['sales'], bins=np.logspace(1,5,int(np.sqrt(len(data)))), ec='black
 plt.gca().set_xscale("log")
 
 plt.title("Sales histogram (log scale)")
-plt.ylabel("Number of products")
-plt.xlabel("Number of sales (log scale)")
+plt.ylabel("Products")
+plt.xlabel("Sales (log scale)")
 plt.savefig("../fig/Histogram_log.png")
+print("Generate ../fig/Histogram_log.png")

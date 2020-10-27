@@ -19,12 +19,13 @@ while True:
     
     if(thisYear < int(data['date'].min().strftime('%Y'))):
         break
-    print(str(thisYear) + "年:")
-    print(data_by_y.describe())
-    print("")
+    #print(str(thisYear) + "年:")
+    #print(data_by_y.describe())
+    #print("")
     
     f.write(str(thisYear) + "年：\n")
     f.write(str(data_by_y.describe()) + "\n\n")
     	
     thisYear = thisYear - 1
 f.close()
+print("Generate ../log/getDescribe_by_year.txt")
