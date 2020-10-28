@@ -28,7 +28,7 @@ DLsiteをクロールし，任意のクリエイターの統計情報を収集�
 レポートには売り上げのヒストグラムやジャンルの共起関係など，基本的な図表が含まれます．
 
 ## HOW TO USE
-[wiki](https://github.com/birdManIkioiShota/DojinHakusho/wiki)もしくは『manual/manual.pdf』をご参照ください
+[wiki](https://github.com/birdManIkioiShota/DojinHakusho/wiki)もしくは『manuals/manual.pdf』をご参照ください
 
 ## 利用規約
 本ツールはDLsiteを利用するクリエイター様を支援することを目的に開発されたツールです．
