@@ -1,5 +1,6 @@
 # _*_ coding: utf-8 _*_
 
+from scipy.stats import norm
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

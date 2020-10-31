@@ -5,6 +5,8 @@ import urllib.parse
 import re
 import os
 import time
+import sys
+import urllib.robotparser
 
 # DojinHakushoをご利用いただきありがとうございます．
 # 本ツールはDLsiteをクロールし，サークル・声優の出演作情報を取得，図表としてレポートする機能を持ちます．
@@ -21,6 +23,11 @@ circle_name = ""
 # 名前はDLsiteのクリエイタータグと一致させる必要がある．
 # 声優不問の場合は空欄にすること
 creator_name = "砂糖しお"
+
+# 本ツールはrobotss.txtを遵守しています!
+rp = urllib.robotparser.RobotFileParser()
+rp.set_url('https://www.dlsite.com/robots.txt')
+rp.read()
 
 # 開始時刻の取得
 start = time.time()
@@ -150,6 +157,11 @@ creator_name_url = urllib.parse.quote(creator_name)
 
 search_url = "https://www.dlsite.com/maniax/fsr/=/language/jp/sex_category%5B0%5D/male/keyword_maker_name/\"" + circle_name_url + "\"/keyword_creater/\"" +  creator_name_url + "\"/ana_flg/off/genre_and_or/or/options_and_or/or/file_type_category%5B0%5D/audio_file/file_type_category_name%5B0%5D/%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB/per_page/100/show_type/1/without_order/1/order/release_d"
 
+# robots.txtを遵守！！！
+if(not rp.can_fetch("*", search_url)):
+    print("Disallow access !")
+    sys.exit()
+
 print("\n探索終了までお待ちください…\n")
 
 # htmlの保存先
@@ -182,6 +194,12 @@ while True:
     # 次ページのURLを生成しHTMLを取得する
     i = i + 1
     access_url = search_url + "/page/" + str(i)
+    
+    # robots.txtを遵守！！！
+    if(not rp.can_fetch("*", search_url)):
+        print("Disallow access !")
+        sys.exit()
+    
     with open(htmlPath, mode='w') as f:
         f.write(requests.get(access_url).text)
 
