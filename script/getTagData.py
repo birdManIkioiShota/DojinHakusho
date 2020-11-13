@@ -26,7 +26,7 @@ def getTagData():
     info = pd.Series(tagData.value_counts())
     pd.set_option('display.max_rows', len(info))
 
-    info = pd.concat([info, info/len(info)], axis=1)
+    info = pd.concat([info, info/len(data)], axis=1)
     tagSum = info.iloc[:,0].sum()
     info = pd.concat([info, info.iloc[:,0]/tagSum], axis=1)
     info.columns = ['出現数','出現率','タグに占める割合']

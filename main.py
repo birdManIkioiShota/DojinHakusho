@@ -35,7 +35,7 @@ start = time.time()
 # HTMLのパース処理
 count = 0 # ツール上の管理番号
 def parse(htmlPath, count):
-    with open(htmlPath, mode='r') as f:
+    with open(htmlPath, mode='r', encoding='utf_8') as f:
         flag = 0
         
         rjno = "-" # DLsite上での管理番号
@@ -61,7 +61,7 @@ def parse(htmlPath, count):
             if line == '</tr>\n' and flag == 1:
                 flag = 0
                 
-                with open(rawdataPath, mode='a') as csv:
+                with open(rawdataPath, mode='a', encoding='utf_8') as csv:
                     csv.write(str(count) + "," + rjno + ",\"" + title + "\",\"")
                     csv.write(author + "\",\"" + cast + "\",")
                     csv.write(price.replace(',','') + "," + sales.replace(',','') + ",\"")
@@ -120,17 +120,33 @@ def parse(htmlPath, count):
                 result = re.match(tagLinePattern, line)
                 if result:
                     line = f.readline()
-                    tagPattern = ">(.*?)</a>"
-                    for result in re.findall(tagPattern, line):
-                        if(tag == "-"):
-                            tag = result
-                        else:
-                            tag = tag + "," + result
+                    tagPattern = ".*>(.*?)</a>"
+                    tagEndPattern = "  </dd>"
+                    while(not re.match(tagEndPattern, line)):
+                        tagName = re.match(tagPattern, line)
+                        
+                        if tagName:
+                            #print(tagName.group(1))
+                            if(tag == "-"):
+                                tag = tagName.group(1)
+                                #print(tagName.group(1))
+                            else:
+                                tag = tag + "," + tagName.group(1)
+                                #print(tagName.group(1))
+                        #print(line)
+                        line = f.readline()
+                    #print("out!")
+                    #for result in re.findall(tagPattern, line):
+                    #    if(tag == "-"):
+                    #        tag = result
+                    #    else:
+                    #        tag = tag + "," + result
                             
                 # 発売日の抽出
                 launchDatePattern = ".*sales_date\">販売日:&nbsp;(.*?)</li>.*"
                 result = re.match(launchDatePattern, line)
                 if result:
+                    #print(line)
                     date = result.group(1)
                     date = date.replace("年", '-')
                     date = date.replace("月", '-')
@@ -155,7 +171,7 @@ print(" ファイル形式　：\"オーディオファイル\"")
 circle_name_url = urllib.parse.quote(circle_name)
 creator_name_url = urllib.parse.quote(creator_name)
 
-search_url = "https://www.dlsite.com/maniax/fsr/=/language/jp/sex_category%5B0%5D/male/keyword_maker_name/\"" + circle_name_url + "\"/keyword_creater/\"" +  creator_name_url + "\"/ana_flg/off/genre_and_or/or/options_and_or/or/file_type_category%5B0%5D/audio_file/file_type_category_name%5B0%5D/%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB/per_page/100/show_type/1/without_order/1/order/release_d"
+search_url = "https://www.dlsite.com/maniax/fsr/=/language/jp/sex_category%5B0%5D/male/keyword_maker_name/" + circle_name_url + "/keyword_creater/" +  creator_name_url + "/ana_flg/off/genre_and_or/or/options_and_or/or/file_type_category%5B0%5D/audio_file/file_type_category_name%5B0%5D/%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB/per_page/100/show_type/1/without_order/1/order/release_d"
 
 # robots.txtを遵守！！！
 if(not rp.can_fetch("*", search_url)):
@@ -170,14 +186,14 @@ htmlPath = "data/page.html"
 rawdataPath = "data/raw_data.csv"
 
 # 最初のHTMLを取得する
-with open(htmlPath, mode='w') as f:
+with open(htmlPath, mode='w', encoding='utf_8') as f:
     f.write(requests.get(search_url).text)
 
 i = 1 # ページ数
 access_url = search_url
 
 # 生データの生成処理
-with open(rawdataPath, mode='w') as f:
+with open(rawdataPath, mode='w', encoding='utf_8') as f:
     f.write("id,RJ_No,title,circle,cast,price,sales,tag,date\n")
 
 # DLsiteへのクロールとパース処理
@@ -200,7 +216,7 @@ while True:
         print("Disallow access !")
         sys.exit()
     
-    with open(htmlPath, mode='w') as f:
+    with open(htmlPath, mode='w', encoding='utf_8') as f:
         f.write(requests.get(access_url).text)
 
 print("探索終了！")

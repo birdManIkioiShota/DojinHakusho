@@ -20,3 +20,7 @@ import getCircleCastData
 # getImageRateはgetTagDataを呼び出す
 print("タグの統計およびImageRateを生成しています")
 import getImageRate
+print("imageRateと売上の関係をプロットしています")
+import imageRateSales
+
+print("終了")

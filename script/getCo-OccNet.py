@@ -22,7 +22,7 @@ def getCo_OccNet():
                 flag = 0
                 if(True in ((relation['from'] == j) & (relation['to'] == i)).values):
                     flag = 1
-                if(i == 0):
+                if(flag == 0):
                     if(True in ((relation['from'] == i) & (relation['to'] == j)).values):
                         flag = 1
                 
