@@ -4,7 +4,7 @@ import CaboCha
 
 c=CaboCha.Parser()
 
-sentence = "純粋な子狐さんを拾ったらとことん癒してくれて心が浄化する音声"
+sentence = "僕は最愛の妻を部下に寝取られた。"
 
 # 視覚的にわかりやすいフォーマット
 print(c.parseToString(sentence))

@@ -26,6 +26,7 @@ def getCircleData():
     # 調査対象の声優名をデータから排除する
     exc_cast = ""
     
+    #data = data[(data['date']>=dt.datetime(2019,1,1)) & (data['date']<=dt.datetime(2019,12,31))]
     spl_cast = data['cast'].str.split(',', expand=True)
     
     castData = None

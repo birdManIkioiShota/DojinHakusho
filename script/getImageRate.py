@@ -35,4 +35,7 @@ def getImageRate():
 
     data.to_csv("../data/getImageRate.csv")
     print('Generate ../data/getImageRate.csv')
+    
+    #data['imageRate'] = data['imageRate'] * np.sqrt(data['sales'])
+    #print(data.sort_values('imageRate', ascending=False))
 getImageRate()

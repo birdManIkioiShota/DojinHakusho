@@ -10,7 +10,7 @@ def getTagBoxPlot():
     data = pd.read_csv("../data/raw_data.csv", index_col='id')
     
     # ここでタグを指定する
-    data = data.query('tag.str.contains("中出し")', engine='python')
+    data = data.query('tag.str.contains("男性受け")', engine='python')
     
     fig, axes = plt.subplots()
     plt.boxplot(data['sales'], showmeans=True)

@@ -18,10 +18,10 @@ for index, row in data.iterrows():
         
     words = pd.concat([words, df_analyzed])
 
-#print(words['1'].value_counts())
-
+#words = words[words['5'].str.contains("動詞", na=False) & ~words['5'].str.contains("助動詞", na=False)]
 words = words[words['5'].str.contains("名詞", na=False)]
 words = words.reset_index()
-print(words['1'].value_counts())
+print(words)
+print(words['1'].value_counts()/len(data))
 words = words['1'].value_counts()/len(data)
 words.to_csv("../data/noun.csv")
