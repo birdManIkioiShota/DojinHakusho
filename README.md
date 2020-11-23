@@ -78,4 +78,10 @@ Python3が動作し，ネットワークに接続可能なPCでの利用を想�
 
 
 ## SPECIAL THANKS
-konkon3249様，『DLsiteとFANZAの同人音声作品を題材とした探索的データ解析』（2019-11-29）
+砂糖しお様（声優），（Twitter：[@sato_sioo](https://twitter.com/sato_sioo)）
+
+> マニュアルで使用するためのデータを，許可を頂いた上で拝借しました．
+
+konkon3249様，『[DLsiteとFANZAの同人音声作品を題材とした探索的データ解析](https://konkon3249.hatenablog.com/entry/2019/11/29/003649)』（訪問：2020-11-21）
+
+> 着想を得たり参考にしたりしました．
